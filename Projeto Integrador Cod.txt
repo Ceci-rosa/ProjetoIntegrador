@@ -1,0 +1,50 @@
+CREATE DATABASE comanda_facil;
+USE comanda_facil;
+
+select * from cadastro;
+
+
+-- Tabela de mesas
+CREATE TABLE mesa (
+    numero INT NOT NULL PRIMARY KEY
+);
+
+-- Tabela de cadastro de usuários
+CREATE TABLE cadastro (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    nome TEXT NOT NULL,
+    cpf CHAR(11) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL  
+);
+
+-- Tabela de itens de pedido (um pedido pode ter vários itens)
+CREATE TABLE item_pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id_pedido INT NOT NULL,
+    item TEXT NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    quantidade INT NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES pedido(id) ON DELETE CASCADE
+);
+
+CREATE TABLE pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    valor_total DECIMAL(10,2) NOT NULL,
+    datahora DATETIME NOT NULL,
+    idmesa INT NOT NULL,
+    id_usuario INT NOT NULL,
+    FOREIGN KEY (idmesa) REFERENCES mesa(numero),
+    FOREIGN KEY (id_usuario) REFERENCES cadastro(id_usuario)
+);
+
+USE comanda_facil;
+
+ALTER TABLE mesa
+ADD COLUMN em_uso BOOLEAN DEFAULT FALSE NOT NULL;
+
+ALTER TABLE pedido ADD COLUMN fechado_com_mesa BOOLEAN DEFAULT FALSE NOT NULL;
+
+CREATE INDEX idx_pedido_idmesa ON pedido(idmesa);
+CREATE INDEX idx_pedido_id_usuario ON pedido(id_usuario);
+CREATE INDEX idx_item_pedido_id_pedido ON item_pedido(id_pedido);
