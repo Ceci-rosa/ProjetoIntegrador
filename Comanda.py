@@ -2,6 +2,7 @@ import customtkinter as ctk
 import mysql.connector
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image
 import bcrypt  
 
 # ================== CONEXÃO COM BD ==================
@@ -20,10 +21,10 @@ except mysql.connector.Error as e:
 
 # ================== CONFIGURAÇÃO DA JANELA ==================
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("green")
+ctk.set_default_color_theme("blue")
 
 janela = ctk.CTk()
-janela.geometry("500x500")
+janela.geometry("1400x900")
 janela.title("ComandaFácil")
 janela.rowconfigure(0, weight=1)
 janela.columnconfigure(0, weight=1)
@@ -120,7 +121,7 @@ def carregar_mesas():
             for mesa in mesas:
                 numero, em_uso = mesa
                 status = "Ocupada" if em_uso else "Livre"
-                cor_status = "#FF6B6B" if em_uso else "#4CAF50"  # Vermelho para ocupada, verde para livre
+                cor_status = "#B50000" if em_uso else "#001A6E"  # Vermelho para ocupada, verde para livre
                 
                 frame_mesa = ctk.CTkFrame(frame_mesas, fg_color="#81A1C1", corner_radius=15)
                 frame_mesa.pack(pady=10, fill="x", padx=20)
@@ -631,33 +632,38 @@ for tela in (telabemvindo, telacadastro, telalogin, telaprincipal):
     tela.grid(row=0, column=0, sticky="nsew")
 
 # --- Tela Bem-vindo ---
-ctk.CTkLabel(telabemvindo, text="ComandaFácil", font=("Arial", 28, "bold")).pack(pady=40)
-ctk.CTkButton(telabemvindo, text="Cadastro", command=lambda: mostrartela(telacadastro)).pack(pady=10)
-ctk.CTkButton(telabemvindo, text="Login", command=lambda: mostrartela(telalogin)).pack(pady=10)
+ctk.CTkLabel(telabemvindo, text="").pack(pady=60)
+img = ctk.CTkImage(light_image=Image.open("sla.png"), size=(300, 110))
+ctk.CTkLabel(telabemvindo, image=img, text="").pack(pady=50)
+ctk.CTkButton(telabemvindo, text="Cadastro", font=("Arial", 25, "bold"), width=250, height=55, command=lambda: mostrartela(telacadastro)).pack(pady=15)
+ctk.CTkButton(telabemvindo, text="Login", font=("Arial", 25, "bold"), width=250, height=55, command=lambda: mostrartela(telalogin)).pack(pady=10)
 
 # --- Tela Cadastro ---
-ctk.CTkLabel(telacadastro, text="Cadastro de Funcionário", font=("Arial", 20)).pack(pady=20)
-entrada_nome = ctk.CTkEntry(telacadastro, placeholder_text="Nome completo", font=("Arial", 16))
-entrada_nome.pack(pady=10)
-entrada_cpf = ctk.CTkEntry(telacadastro, placeholder_text="CPF", font=("Arial", 16))
-entrada_cpf.pack(pady=10)
-entrada_senha = ctk.CTkEntry(telacadastro, placeholder_text="Senha (6 dígitos)", show="*", font=("Arial", 16))
-entrada_senha.pack(pady=10)
-ctk.CTkButton(telacadastro, text="Cadastrar", command=cadastrar).pack(pady=10)
-ctk.CTkButton(telacadastro, text="Voltar ao Menu", command=lambda: mostrartela(telabemvindo)).pack(pady=10)
-mensagem_cadastro = ctk.CTkLabel(telacadastro, text="", font=("Arial", 14))
+ctk.CTkLabel(telacadastro, text="").pack(pady=5)
+ctk.CTkLabel(telacadastro, text="Cadastro de Funcionário",  font=("Arial", 50, "bold")).pack(pady=40)
+entrada_nome = ctk.CTkEntry(telacadastro, placeholder_text="Nome completo", font=("Arial", 30), width=550, height=50)
+entrada_nome.pack(pady=15)
+entrada_cpf = ctk.CTkEntry(telacadastro, placeholder_text="CPF", font=("Arial", 30), width=550, height=50)
+entrada_cpf.pack(pady=15)
+entrada_senha = ctk.CTkEntry(telacadastro, placeholder_text="Senha (6 dígitos)", show="*", font=("Arial", 30), width=550, height=50)
+entrada_senha.pack(pady=15)
+mensagem_cadastro = ctk.CTkLabel(telacadastro, text="", font=("Arial", 20))
 mensagem_cadastro.pack(pady=10)
+ctk.CTkButton(telacadastro, text="Cadastrar", font=("Arial", 25, "bold"), width=220, height=50, command=cadastrar).pack(pady=10)
+ctk.CTkButton(telacadastro, text="Voltar ao Menu",  font=("Arial", 25, "bold"), width=220, height=50, command=lambda: mostrartela(telabemvindo)).pack(pady=20)
 
 # --- Tela Login ---
-ctk.CTkLabel(telalogin, text="Login", font=("Arial", 20)).pack(pady=20)
-entrada_login_cpf = ctk.CTkEntry(telalogin, placeholder_text="CPF", font=("Arial", 16))
-entrada_login_cpf.pack(pady=10)
-entrada_login_senha = ctk.CTkEntry(telalogin, placeholder_text="Senha", show="*", font=("Arial", 16))
-entrada_login_senha.pack(pady=10)
-ctk.CTkButton(telalogin, text="Entrar", command=logar).pack(pady=10)
-ctk.CTkButton(telalogin, text="Voltar ao Menu", command=lambda: mostrartela(telabemvindo)).pack(pady=10)
-mensagem_login = ctk.CTkLabel(telalogin, text="", font=("Arial", 14))
+ctk.CTkLabel(telalogin, text="").pack(pady=5)
+ctk.CTkLabel(telalogin, text="Login", font=("Arial", 50, "bold")).pack(pady=40)
+entrada_login_cpf = ctk.CTkEntry(telalogin, placeholder_text="CPF", font=("Arial", 30), width=550, height=50)
+entrada_login_cpf.pack(pady=15)
+entrada_login_senha = ctk.CTkEntry(telalogin, placeholder_text="Senha", show="*",font=("Arial", 30), width=550, height=50)
+entrada_login_senha.pack(pady=15)
+mensagem_login = ctk.CTkLabel(telalogin, text="", font=("Arial", 20))
 mensagem_login.pack(pady=10)
+ctk.CTkButton(telalogin, text="Entrar",  font=("Arial", 25, "bold"), width=220, height=50, command=logar).pack(pady=10)
+ctk.CTkButton(telalogin, text="Voltar ao Menu",  font=("Arial", 25, "bold"), width=220, height=50, command=lambda: mostrartela(telabemvindo)).pack(pady=20)
+
 
 def mostrar_subtela(subtela):
     subtela.tkraise()
@@ -671,7 +677,7 @@ def configurar_tela_principal(janela, telaprincipal, telabemvindo):
     global frame_mesas, frame_status, frame_historico
 
     titulo = ctk.CTkLabel(telaprincipal, text="Painel de Pedidos", font=("Arial", 20, "bold"))
-    titulo.pack(pady=20)
+    titulo.pack(side="top", anchor="w", padx=10, pady=20)
     
     barra_lateral = ctk.CTkFrame(telaprincipal, width=250, corner_radius=10)
     barra_lateral.pack(side="left", fill="y", padx=10, pady=10)
@@ -692,7 +698,7 @@ def configurar_tela_principal(janela, telaprincipal, telabemvindo):
     carregar_historico()
 
     
-    btn_mesas = ctk.CTkButton(barra_lateral, text="🍽️ Mesas", font=("Arial", 14), command=lambda: mostrar_subtela(frame_mesas))
+    btn_mesas = ctk.CTkButton(barra_lateral, text="🍽️Mesas", font=("Arial", 14), command=lambda: mostrar_subtela(frame_mesas))
     btn_mesas.pack(pady=15, padx=10, fill="x")
     btn_status = ctk.CTkButton(barra_lateral, text="📊 Status", font=("Arial", 14), command=lambda: mostrar_subtela(frame_status))
     btn_status.pack(pady=15, padx=10, fill="x")
